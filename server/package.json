@@ -10,9 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Your Name",
+  "author": "Sameer Vohra",
   "license": "ISC",
-  "description": "A TypeScript Express.js backend application",
+  "description": "SketchSphere",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express": "^4.19.2",
