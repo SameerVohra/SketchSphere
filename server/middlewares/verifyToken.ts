@@ -1,5 +1,7 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+import dotenv from "dotenv";
+dotenv.config();
 
 interface DecodedUser extends JwtPayload {
   id: string;
@@ -14,7 +16,7 @@ declare global {
 }
 
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.header("Authorization");
+  const token = req.header("Authorization")?.split(" ")[1];
   if (!token) return res.status(401).send("Access Denied");
 
   if (!process.env.SECRET_KEY) {
@@ -26,11 +28,11 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     if (!decoded || !decoded.id) {
       return res.status(400).send("Invalid Token");
     }
+
     req.user = decoded;
     next();
   } catch (error) {
-    console.error("Error verifying token:", error);
-    return res.status(500).send("Internal Server Error");
+    return res.status(400).send("Invalid Token");
   }
 };
 

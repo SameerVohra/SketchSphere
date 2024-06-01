@@ -6,6 +6,7 @@ interface InterUser extends Document {
   password: string;
   number: number;
   uId: string;
+  projects: [string];
 }
 
 const userSchema: Schema = new mongoose.Schema({
@@ -14,6 +15,7 @@ const userSchema: Schema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   mobile: { type: Number, required: true },
   password: { type: String, required: true },
+  projects: { type: [String] },
 });
 
 const User: Model<InterUser> = mongoose.model<InterUser>("User", userSchema);

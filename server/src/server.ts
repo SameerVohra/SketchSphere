@@ -2,16 +2,25 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import verifyToken from "../middlewares/verifyToken";
-import app from "./app";
-import cors from "cors";
+import app from "./app"; // Ensure `app` is properly configured
+import { Server } from "socket.io";
+import http from "http";
 
 dotenv.config();
 
 const port: number = parseInt(process.env.PORT || "3000");
 
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
 mongoose
   .connect(process.env.DB_URI!)
-  .then(() => {
+  .then((): void => {
     console.log("Connected to DB successfully");
   })
   .catch((error) => {
@@ -19,16 +28,32 @@ mongoose
     process.exit(1);
   });
 
-app.use(cors({ origin: "*" }));
-
-app.get("/test", (req: Request, res: Response) => {
+app.get("/test", (req: Request, res: Response): void => {
   res.send("Testing");
 });
 
-app.get("/verify", verifyToken, (req: Request, res: Response) => {
-  res.send("verified");
+app.get("/verify", verifyToken, (req: Request, res: Response): void => {
+  res.send("Verified");
 });
 
-app.listen(port, () => {
-  console.log(`Listening to port: ${port}`);
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  socket.on("draw", (data) => {
+    console.log("Draw event received:", data);
+    socket.broadcast.emit("draw", data);
+  });
+
+  socket.on("clear", () => {
+    console.log("Clear event received");
+    io.emit("clear");
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+
+server.listen(port, (): void => {
+  console.log(`Listening on port: ${port}`);
 });

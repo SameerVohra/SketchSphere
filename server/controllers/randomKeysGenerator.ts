@@ -1,7 +1,7 @@
 class GenerateKey {
   static genKey() {
     const str: string =
-      "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*:;";
+      "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let keyLen: number = 6;
     let key: string = "";
     for (let i: number = 0; i < keyLen; i++) {

@@ -7,6 +7,7 @@ interface projectInterface extends Document {
   numberOfUsers: number;
   projectKey: string;
   projectId: string;
+  usersJoined: [string];
 }
 
 const project = new mongoose.Schema({
@@ -16,6 +17,7 @@ const project = new mongoose.Schema({
   projectName: { type: String, required: true },
   username: { type: String, requried: true },
   numberOfUsers: { type: Number },
+  usersJoined: { type: [String] },
 });
 
 const Project: Model<projectInterface> = mongoose.model<projectInterface>(
