@@ -19,6 +19,10 @@ function CreatingProject() {
     e.preventDefault();
     const token: string | null = localStorage.getItem("token");
     try {
+      if (projName === "") {
+        setErr("Enter Project Name");
+        return;
+      }
       const res = await axios.post(
         `${link.url}/${id}/new-project`,
         { projectName: projName },
@@ -38,24 +42,43 @@ function CreatingProject() {
   };
 
   return (
-    <>
+    <div className="flex flex-col items-center justify-center text-white p-4 bg-gray-300 border-2 border-white rounded-2xl">
       {err && <Alert severity="error">{err}</Alert>}
       {success && (
         <Alert severity="success">Project Created Successfully</Alert>
       )}
-      <TextField
-        variant="outlined"
-        label="Project Name"
-        id="projectId"
-        value={projName}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setProjName(e.target.value)
-        }
-      />
-      <Button size="large" onClick={handleCreate}>
-        Create Project
-      </Button>
-    </>
+      <div className="flex flex-col gap-4 w-full max-w-md">
+        <TextField
+          variant="outlined"
+          label="Project Name"
+          id="projectId"
+          value={projName}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setProjName(e.target.value)
+          }
+          className="bg-gray-800 text-white border border-gray-700 rounded-md"
+          InputLabelProps={{
+            style: { color: "#000" },
+          }}
+          InputProps={{
+            style: { color: "#000", background: "white" },
+          }}
+        />
+        <Button
+          size="large"
+          onClick={handleCreate}
+          style={{
+            color: "white",
+            border: "2px solid white",
+            background: "gray",
+            fontSize: "15px",
+          }}
+          className="bg-blue-500 text-white hover:bg-blue-700"
+        >
+          Create Project
+        </Button>
+      </div>
+    </div>
   );
 }
 

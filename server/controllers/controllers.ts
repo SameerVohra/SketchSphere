@@ -66,7 +66,7 @@ export const Register = async (req: Request, res: Response): Promise<void> => {
         email: email,
         mobile: mobile,
         password: bcrypt.hashSync(password),
-        projects: [],
+        projects: [{}],
       });
 
       await user.save();
@@ -105,7 +105,7 @@ export const MakeProject = async (
         username: user.username,
         numberOfUsers: 0,
       });
-      user.projects.push(projectName);
+      user.projects.push({ projectName: projectName, projectId: projectId });
       console.log(user.projects);
       await user.save();
       await project.save();
@@ -129,24 +129,69 @@ export const JoinProject = async (
     if (!user) {
       res.status(401).send("Login to continue");
       return;
-    }
-    if (!project) {
+    } else if (!project) {
       res.status(404).send("No such project");
       return;
     } else if (project.projectKey !== projectKey) {
       res.status(401).send("Wrong Project key");
-      return;
-    } else if (
-      project.usersJoined.includes(user?.username) &&
-      project.userId === user?.uId
-    ) {
-      res.status(409).send("User already joined");
       return;
     }
     project.numberOfUsers += 1;
     project.usersJoined.push(user?.username);
     await project.save();
     res.status(201).send("Joined Successfully");
+  } catch (error) {
+    console.log(error);
+    res.status(501).send("Internal Server Error");
+  }
+};
+
+export const userDetails = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const uId = req.params;
+  console.log(uId.id);
+  try {
+    const id: string = uId.id;
+    const user = await User.findOne({ uId: id });
+    if (!user) {
+      res.status(404).send("Invalid user");
+      return;
+    }
+    res.status(201).json({ user });
+  } catch (error) {
+    res.status(501).send("Internal Server Error");
+    console.log(error);
+  }
+};
+
+export const projectDetails = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { uId } = req.body;
+  console.log(uId);
+  try {
+    const projects = await Project.find({ userId: uId });
+    console.log(projects);
+    res.status(201).send(projects);
+  } catch (error) {
+    console.log(error);
+    res.status(501).send("Internal Server Error");
+  }
+};
+
+export const saveDrawing = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { uId, projectId } = req.body;
+  console.log(uId);
+  try {
+    const projects = await Project.find({ userId: uId });
+    console.log(projects);
+    res.status(201).send(projects);
   } catch (error) {
     console.log(error);
     res.status(501).send("Internal Server Error");

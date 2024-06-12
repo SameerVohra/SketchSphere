@@ -4,6 +4,9 @@ import {
   Login,
   MakeProject,
   Register,
+  projectDetails,
+  saveDrawing,
+  userDetails,
 } from "../controllers/controllers";
 import cors from "cors";
 import verifyToken from "../middlewares/verifyToken";
@@ -15,5 +18,8 @@ app.post("/login", Login);
 app.post("/register", Register);
 app.post("/:id/new-project", verifyToken, MakeProject);
 app.post("/:id/join-project", verifyToken, JoinProject);
-
+app.get("/user-details/:id", verifyToken, userDetails);
+app.post("/project-details", verifyToken, projectDetails);
+app.post("/save-canvas", verifyToken, saveDrawing);
+app.get("/user-details/:id", verifyToken, userDetails);
 export default app;

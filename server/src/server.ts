@@ -39,14 +39,24 @@ app.get("/verify", verifyToken, (req: Request, res: Response): void => {
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
-  socket.on("draw", (data) => {
-    console.log("Draw event received:", data);
-    socket.broadcast.emit("draw", data);
+  socket.on("joinProject", (projectId) => {
+    socket.join(projectId);
+    console.log(`User ${socket.id} joined project ${projectId}`);
   });
 
-  socket.on("clear", () => {
-    console.log("Clear event received");
-    io.emit("clear");
+  socket.on("leaveProject", (projectId) => {
+    socket.leave(projectId);
+    console.log(`User ${socket.id} left project ${projectId}`);
+  });
+
+  socket.on("draw", (data) => {
+    console.log("Broadcasting draw event:", data);
+    socket.to(data.projectId).emit("draw", data);
+  });
+
+  socket.on("clear", (projectId) => {
+    console.log(`Clearing project: ${projectId}`);
+    io.to(projectId).emit("clear");
   });
 
   socket.on("disconnect", () => {

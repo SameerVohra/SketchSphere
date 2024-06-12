@@ -34,28 +34,55 @@ function JoiningProject() {
       setErr(error.response.data);
     }
   };
-  return (
-    <>
-      {err && <h1 className="text-red-500 text-2xl">{err}</h1>}
-      <TextField
-        variant="outlined"
-        id="projectId"
-        label="Project Id"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setProjectId(e.target.value)
-        }
-      />
 
-      <TextField
-        variant="outlined"
-        id="projectKey"
-        label="Project Key"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setProjectKey(e.target.value)
-        }
-      />
-      <Button onClick={handleJoin}>JOIN</Button>
-    </>
+  return (
+    <div className=" flex flex-col items-center justify-center text-white p-4 bg-gray-300 border-2 border-white rounded-2xl">
+      {err && <h1 className="text-red-500 text-2xl">{err}</h1>}
+      <div className="flex flex-col gap-4 w-full max-w-md">
+        <TextField
+          variant="outlined"
+          id="projectId"
+          label="Project Id"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setProjectId(e.target.value)
+          }
+          className="bg-gray-800 text-white border border-gray-700 rounded-md"
+          InputLabelProps={{
+            style: { color: "#000" },
+          }}
+          InputProps={{
+            style: { color: "#000", background: "white" },
+          }}
+        />
+        <TextField
+          variant="outlined"
+          id="projectKey"
+          label="Project Key"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setProjectKey(e.target.value)
+          }
+          className="bg-gray-800 text-white border border-gray-700 rounded-md"
+          InputLabelProps={{
+            style: { color: "#000" },
+          }}
+          InputProps={{
+            style: { color: "#000", background: "white" },
+          }}
+        />
+        <Button
+          onClick={handleJoin}
+          style={{
+            color: "white",
+            border: "2px solid white",
+            background: "gray",
+            fontSize: "15px",
+          }}
+          className="bg-blue-500 text-white hover:bg-blue-700"
+        >
+          JOIN
+        </Button>
+      </div>
+    </div>
   );
 }
 
