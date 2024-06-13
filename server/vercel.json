@@ -2,19 +2,17 @@
   "version": 2,
   "builds": [
     {
-      "src": "src/*.ts",
-      "use": "@vercel/node"
+      "src": "app.tsx",
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
-    { "handle": "filesystem" },
     {
-      "src": "/src/(.*)",
-      "dest": "src/$1.ts"
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
-      "dest": "src/server.ts"
+      "dest": "/app.tsx"
     }
   ]
 }
