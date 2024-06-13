@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/main.tsx"
+      "dest": "src/main.tsx"
     }
   ]
 }
