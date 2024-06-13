@@ -27,13 +27,17 @@ function JoiningProject() {
       if (res.status === 201) {
         navigate(`/${projectId}/project`);
       }
-    } catch (error) {
-      setErr(error.response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        setErr(error.response.data || "An error occurred");
+      } else {
+        setErr("An error occurred");
+      }
     }
   };
 
   return (
-    <div className=" flex flex-col items-center justify-center text-white p-4 bg-gray-300 border-2 border-white rounded-2xl">
+    <div className="flex flex-col items-center justify-center text-white p-4 bg-gray-300 border-2 border-white rounded-2xl">
       {err && <h1 className="text-red-500 text-2xl">{err}</h1>}
       <div className="flex flex-col gap-4 w-full max-w-md">
         <TextField

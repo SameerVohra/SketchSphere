@@ -26,8 +26,8 @@ function Register() {
       if (res.status == 201) {
         navigate("/login");
       }
-    } catch (error) {
-      setErr(error.response.data);
+    } catch (error: unknown) {
+      setErr((error as any).response.data);
     }
   };
 

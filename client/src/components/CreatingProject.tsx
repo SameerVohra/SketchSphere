@@ -35,8 +35,12 @@ function CreatingProject() {
           `/${res.data.project.projectId}/${res.data.project.projectName}`,
         );
       }
-    } catch (error) {
-      setErr(error.response?.data || "An error occurred");
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        setErr(error.response.data || "An error occurred");
+      } else {
+        setErr("An error occurred");
+      }
     }
   };
 

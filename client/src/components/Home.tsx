@@ -7,14 +7,19 @@ import axios from "axios";
 import link from "../assets/link.json";
 import ProjectCard from "./ProjectCard";
 
+type Project = {
+  projectName: string;
+  projectId: string;
+  projectKey: string;
+};
+
 function Home() {
   const { id } = useParams<{ id: string }>();
 
   const [isJoining, setIsJoining] = useState<boolean>(false);
   const [isCreating, setIsCreating] = useState<boolean>(false);
   const [err, setErr] = useState<string>("");
-  const [proj, setProj] = useState<string[]>([]);
-  const [userDetails, setUserDetails] = useState({});
+  const [proj, setProj] = useState<Project[]>([]);
 
   const handleJoin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -31,52 +36,37 @@ function Home() {
   useEffect(() => {
     const token: string | null = localStorage.getItem("token");
 
-    try {
-      if (!token) {
-        setErr("Login To Continue");
-        return;
-      }
-      const data = async () => {
+    if (!token) {
+      setErr("Login To Continue");
+      return;
+    }
+    const fetchData = async () => {
+      try {
         const response = await axios.post(
           `${link.url}/project-details`,
           { uId: id },
           { headers: { Authorization: `Bearer ${token}` } },
         );
         setProj(response.data);
-      };
-      data();
-    } catch (error) {
-      setErr(error.response.message);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    const token: string | null = localStorage.getItem("token");
-    try {
-      if (!token) {
-        setErr("Login to continue");
-        return;
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+          setErr(error.response.data || "An error occurred");
+        } else {
+          setErr("An error occurred");
+        }
       }
-      const data = async () => {
-        const response = await axios.get(`${link.url}/user-details/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUserDetails(response.data.user);
-      };
-      data();
-    } catch (error) {
-      setErr(error.response.message);
-    }
-  }, []);
+    };
+    fetchData();
+  }, [id]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-white p-4 ">
       {err && <h1 className="text-red-500 text-xl">{err}</h1>}
       {isCreating && <CreatingProject />}
       {isJoining && <JoiningProject />}
-      <div className="flex flex-row justify-around items-center  min-w-full mt-4">
+      <div className="flex flex-row justify-around items-center min-w-full mt-4">
         <Button
-          variant={!isJoining ? "outlined" : "disabled"}
+          variant={!isJoining ? "outlined" : "contained"}
           size="large"
           onClick={handleJoin}
           style={{ color: "white", borderColor: "white", fontSize: "20px" }}
@@ -87,7 +77,7 @@ function Home() {
           Join Existing Project
         </Button>
         <Button
-          variant={!isCreating ? "outlined" : "disabled"}
+          variant={!isCreating ? "outlined" : "contained"}
           size="large"
           style={{ color: "white", borderColor: "white", fontSize: "20px" }}
           onClick={handleCreate}
@@ -99,7 +89,7 @@ function Home() {
         </Button>
       </div>
       <div className="flex flex-wrap flex-row mt-6 justify-evenly min-w-full">
-        {proj.map((p: string, i: number) => (
+        {proj.map((p, i) => (
           <ProjectCard
             key={i}
             projectName={p.projectName}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
@@ -32,15 +32,19 @@ function Login() {
         username: username,
         password: password,
       });
-      if (res.status == 201) {
+      if (res.status === 201) {
         localStorage.setItem("id", res.data.id);
         localStorage.setItem("username", username);
         localStorage.setItem("token", res.data.token);
-        dispatch(login());
+        dispatch(login(res.data)); // Provide the payload to the login action
         navigate(`/${res.data.id}/home`);
       }
     } catch (error) {
-      setErr(error.response.data);
+      if (axios.isAxiosError(error) && error.response) {
+        setErr(error.response.data);
+      } else {
+        setErr("An error occurred");
+      }
       console.error(error);
     }
   };

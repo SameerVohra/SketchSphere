@@ -3,7 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 
 function App() {
-  const username: string | null = localStorage.getItem("username");
+  const username: any = localStorage.getItem("username");
   const token = localStorage.getItem("token");
   return (
     <>

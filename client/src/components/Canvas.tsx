@@ -7,8 +7,16 @@ import axios from "axios";
 import Alert from "@mui/material/Alert";
 const socket = io(`${link.url}`);
 
+type ExtendedCanvasRenderingContext2D = CanvasRenderingContext2D & {
+  lastX?: number;
+  lastY?: number;
+};
+
 function Canvas() {
-  const { projid } = useParams();
+  const { projid, projname } = useParams<{
+    projid: string;
+    projname: string;
+  }>();
   const id = localStorage.getItem("id");
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
@@ -18,11 +26,12 @@ function Canvas() {
   const [showPallet, setShowPallet] = useState<boolean>(false);
   const [err, setErr] = useState<string>("");
   const navigate = useNavigate();
-  const { projname } = useParams();
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
+    const context = canvas?.getContext(
+      "2d",
+    ) as ExtendedCanvasRenderingContext2D | null;
 
     const updateCanvasSize = () => {
       if (canvas) {
@@ -35,17 +44,21 @@ function Canvas() {
     window.addEventListener("resize", updateCanvasSize);
 
     const savedDrawing = async () => {
-      const data = await axios.post(`${link.url}/load-canvas`, {
-        projectId: projid,
-      });
-      const savedCanvasData = data.data;
-      if (savedCanvasData && context) {
-        const img = new Image();
-        img.onload = function () {
-          context.clearRect(0, 0, canvas?.width, canvas?.height);
-          context.drawImage(img, 0, 0);
-        };
-        img.src = savedCanvasData;
+      try {
+        const data = await axios.post(`${link.url}/load-canvas`, {
+          projectId: projid,
+        });
+        const savedCanvasData = data.data;
+        if (savedCanvasData && context) {
+          const img = new Image();
+          img.onload = function () {
+            context.clearRect(0, 0, canvas!.width, canvas!.height);
+            context.drawImage(img, 0, 0);
+          };
+          img.src = savedCanvasData;
+        }
+      } catch (error) {
+        setErr((error as any).response.message);
       }
     };
 
@@ -65,7 +78,9 @@ function Canvas() {
       if (data.projectId !== projid) return;
       const canvas = canvasRef.current;
       if (canvas) {
-        const context = canvas.getContext("2d");
+        const context = canvas.getContext(
+          "2d",
+        ) as ExtendedCanvasRenderingContext2D | null;
         if (context) {
           context.strokeStyle = data.color;
           context.lineWidth = data.pencilThickness;
@@ -105,7 +120,7 @@ function Canvas() {
         drawing,
       });
     } catch (error) {
-      setErr(error.response.message);
+      setErr((error as any).response.message);
     }
   };
 
@@ -113,7 +128,9 @@ function Canvas() {
     setIsDrawing(false);
     const canvas = canvasRef.current;
     if (canvas) {
-      const context = canvas.getContext("2d");
+      const context = canvas.getContext(
+        "2d",
+      ) as ExtendedCanvasRenderingContext2D | null;
       if (context) {
         context.lastX = undefined;
         context.lastY = undefined;
@@ -127,7 +144,9 @@ function Canvas() {
   const startDrawing = (e: React.MouseEvent) => {
     const canvas = canvasRef.current;
     if (canvas) {
-      const context = canvas.getContext("2d");
+      const context = canvas.getContext(
+        "2d",
+      ) as ExtendedCanvasRenderingContext2D | null;
       if (context) {
         setIsDrawing(true);
         context.beginPath();
@@ -143,7 +162,9 @@ function Canvas() {
     if (!isDrawing) return;
     const canvas = canvasRef.current;
     if (canvas) {
-      const context = canvas.getContext("2d");
+      const context = canvas.getContext(
+        "2d",
+      ) as ExtendedCanvasRenderingContext2D | null;
       if (context) {
         context.strokeStyle = color;
         context.lineWidth = pencilThickness;
