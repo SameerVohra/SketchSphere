@@ -4,10 +4,11 @@ import Header from "./components/Header";
 
 function App() {
   const username: string | null = localStorage.getItem("username");
+  const token = localStorage.getItem("token");
   return (
     <>
       <div className="bg-black min-h-screen">
-        <Header username={username} />
+        {token && <Header username={username} />}
 
         <Outlet />
       </div>
