@@ -2,25 +2,25 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import verifyToken from "../middlewares/verifyToken";
-import app from "./app";
 import { Server } from "socket.io";
 import http from "http";
+import app from "./app"; // Import the app instance
 
 dotenv.config();
 
 const port: number = parseInt(process.env.PORT || "3000");
 
-const server = http.createServer(app);
+const server = http.createServer(app); // Create server with the express app
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "*", // Allow all origins, change in production
     methods: ["GET", "POST"],
   },
 });
 
 mongoose
   .connect(process.env.DB_URI!)
-  .then((): void => {
+  .then(() => {
     console.log("Connected to DB successfully");
   })
   .catch((error) => {
@@ -28,14 +28,7 @@ mongoose
     process.exit(1);
   });
 
-app.get("/test", (req: Request, res: Response): void => {
-  res.send("Testing");
-});
-
-app.get("/verify", verifyToken, (req: Request, res: Response): void => {
-  res.send("Verified");
-});
-
+// Socket.IO logic
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
@@ -62,6 +55,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(port, (): void => {
+server.listen(port, () => {
   console.log(`Listening on port: ${port}`);
 });
