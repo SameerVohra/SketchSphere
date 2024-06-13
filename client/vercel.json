@@ -2,14 +2,11 @@
   "version": 2,
   "builds": [
     {
-      "src": "main.tsx",
+      "src": "src/main.tsx",
       "use": "@vercel/static-build"
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "src/main.tsx"
-    }
+    { "src": "/(.*)", "dest": "src/main.tsx" }
   ]
 }
