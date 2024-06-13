@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "main.tsx",
+      "src": "app.tsx",
       "use": "@vercel/static-build"
     }
   ],
