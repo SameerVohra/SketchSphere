@@ -11,9 +11,5 @@
       "src": "/(.*)",
       "dest": "/src/server.ts"
     }
-  ],
-  "env": {
-    "PORT": "3000",
-    "DB_URI": "@db_uri"
-  }
+  ]
 }
