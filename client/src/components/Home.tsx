@@ -30,7 +30,7 @@ function Home() {
 
   useEffect(() => {
     const token: string | null = localStorage.getItem("token");
-    console.log(token);
+
     try {
       if (!token) {
         setErr("Login To Continue");
@@ -42,12 +42,10 @@ function Home() {
           { uId: id },
           { headers: { Authorization: `Bearer ${token}` } },
         );
-        console.log(response.data);
         setProj(response.data);
       };
       data();
     } catch (error) {
-      console.log(error);
       setErr(error.response.message);
     }
   }, [id]);
@@ -59,17 +57,14 @@ function Home() {
         setErr("Login to continue");
         return;
       }
-      console.log(id);
       const data = async () => {
         const response = await axios.get(`${link.url}/user-details/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log(response);
         setUserDetails(response.data.user);
       };
       data();
     } catch (error) {
-      console.log(error);
       setErr(error.response.message);
     }
   }, []);

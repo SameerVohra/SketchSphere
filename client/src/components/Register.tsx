@@ -23,13 +23,11 @@ function Register() {
         mobile,
         password,
       });
-      console.log(res);
       if (res.status == 201) {
         navigate("/login");
       }
     } catch (error) {
       setErr(error.response.data);
-      console.log(error);
     }
   };
 

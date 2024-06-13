@@ -4,6 +4,7 @@ import {
   Login,
   MakeProject,
   Register,
+  loadCanvas,
   projectDetails,
   saveDrawing,
   userDetails,
@@ -20,6 +21,7 @@ app.post("/:id/new-project", verifyToken, MakeProject);
 app.post("/:id/join-project", verifyToken, JoinProject);
 app.get("/user-details/:id", verifyToken, userDetails);
 app.post("/project-details", verifyToken, projectDetails);
-app.post("/save-canvas", verifyToken, saveDrawing);
+app.post("/save-canvas", saveDrawing);
+app.post("/load-canvas", loadCanvas);
 app.get("/user-details/:id", verifyToken, userDetails);
 export default app;

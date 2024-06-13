@@ -13,7 +13,6 @@ function JoiningProject() {
 
   const handleJoin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log("Joining");
     const token = localStorage.getItem("token");
     try {
       if (!token) {
@@ -25,12 +24,10 @@ function JoiningProject() {
         { projectKey, projectId },
         { headers: { Authorization: `Bearer ${token}` } },
       );
-      console.log(res);
       if (res.status === 201) {
         navigate(`/${projectId}/project`);
       }
     } catch (error) {
-      console.log(error);
       setErr(error.response.data);
     }
   };

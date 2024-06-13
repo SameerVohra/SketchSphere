@@ -1,14 +1,12 @@
-import mongoose, { Model, Document } from "mongoose";
+import mongoose, { Schema, Model, Document } from "mongoose";
 
 interface canvasInterface extends Document {
-  userId: string;
   drawData: string;
   projectName: string;
   projectId: string;
 }
 
-const canvas = new mongoose.Schema({
-  userId: { type: String },
+const canvas: Schema = new mongoose.Schema({
   drawData: { type: String },
   projectName: { type: String },
   projectId: { type: String },

@@ -7,6 +7,8 @@ import Login from "./components/Login.tsx";
 import Register from "./components/Register.tsx";
 import Home from "./components/Home.tsx";
 import Projectpage from "./components/Projectpage.tsx";
+import { Provider } from "react-redux";
+import store from "./Store/store.ts";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +16,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/login",
+        path: "/",
         element: <Login />,
       },
       {
@@ -26,7 +28,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/:projid/:proj-name",
+        path: "/:projid/:projname",
         element: <Projectpage />,
       },
     ],
@@ -35,6 +37,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </>,
 );

@@ -6,6 +6,7 @@ import GenerateKey from "./randomKeysGenerator";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import CanvasModel from "../models/canvasModel";
 dotenv.config();
 
 export const Login = async (req: Request, res: Response): Promise<void> => {
@@ -186,14 +187,48 @@ export const saveDrawing = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
-  const { uId, projectId } = req.body;
-  console.log(uId);
+  const { projectId, drawing } = req.body;
   try {
-    const projects = await Project.find({ userId: uId });
-    console.log(projects);
-    res.status(201).send(projects);
+    const project = await Project.findOne({ projectId: projectId });
+    const canvasData = await CanvasModel.findOne({ projectId: projectId });
+    if (!canvasData) {
+      console.log(project);
+      const newDrawing = new CanvasModel({
+        drawData: drawing,
+        projectId: projectId,
+        projectName: project?.projectName,
+      });
+      await newDrawing.save();
+      res.status(201).send("saved Successfully");
+    } else {
+      const newData = await CanvasModel.findOneAndUpdate(
+        { projectId: projectId },
+        { drawData: drawing },
+      );
+      await newData!.save();
+      res.status(201).send("saved successfully");
+    }
   } catch (error) {
     console.log(error);
+    res.status(501).send("Internal Server Error");
+  }
+};
+
+export const loadCanvas = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  const { projectId } = req.body;
+  try {
+    const project = await CanvasModel.findOne({ projectId: projectId });
+    if (!project) {
+      res.status(404).send("Error fetching project data");
+      return;
+    }
+
+    console.log(project);
+    res.status(201).send(project.drawData);
+  } catch (error) {
     res.status(501).send("Internal Server Error");
   }
 };

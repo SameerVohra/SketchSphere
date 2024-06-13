@@ -28,7 +28,6 @@ function CreatingProject() {
         { projectName: projName },
         { headers: { Authorization: `Bearer ${token}` } },
       );
-      console.log(res);
       if (res.status === 201) {
         setSuccess(true);
         setProjName("");

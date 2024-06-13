@@ -4,8 +4,11 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import link from "../assets/link.json";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../Store/authSlice";
 
 function Login() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -29,11 +32,11 @@ function Login() {
         username: username,
         password: password,
       });
-      console.log(res);
       if (res.status == 201) {
         localStorage.setItem("id", res.data.id);
         localStorage.setItem("username", username);
         localStorage.setItem("token", res.data.token);
+        dispatch(login());
         navigate(`/${res.data.id}/home`);
       }
     } catch (error) {

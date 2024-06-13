@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
 import verifyToken from "../middlewares/verifyToken";
-import app from "./app"; // Ensure `app` is properly configured
+import app from "./app";
 import { Server } from "socket.io";
 import http from "http";
 
@@ -50,12 +50,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("draw", (data) => {
-    console.log("Broadcasting draw event:", data);
     socket.to(data.projectId).emit("draw", data);
   });
 
   socket.on("clear", (projectId) => {
-    console.log(`Clearing project: ${projectId}`);
     io.to(projectId).emit("clear");
   });
 
