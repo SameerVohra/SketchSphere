@@ -2,10 +2,10 @@
   "version": 2,
   "builds": [
     {
-      "src": "client/package.json",
+      "src": "/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "client/dist"
+        "distDir": "/dist"
       }
     }
   ],
@@ -26,7 +26,7 @@
       "src": "/(static/.*|favicon.ico)",  
       "dest": "/dist/$1"
     },
-    // Catch-all route for all other requests
+    
       "dest": "/dist/index.html"
     }
   ],
