@@ -61,3 +61,4 @@ test-ledger/
 *.apk
 *.abb
 .envrc
+.vercel
