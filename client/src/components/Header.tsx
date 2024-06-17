@@ -9,7 +9,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ username }) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const isLogin = location.pathname === "/login";
+  const isLogin = location.pathname === "/";
   const isRegister = location.pathname === "/register";
   const navigate = useNavigate();
   const [showList, setShowList] = useState<boolean>(false);
@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({ username }) => {
     localStorage.removeItem("id");
     localStorage.removeItem("username");
     dispatch(logout());
-    navigate("/login");
+    navigate("/");
   };
 
   const handleClick = (e: React.MouseEvent) => {

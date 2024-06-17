@@ -92,7 +92,7 @@ function Register() {
           Register
         </Button>
         <Link
-          to="/login"
+          to="/"
           className="font-thin text-right text-xl hover:font-bold hover:underline hover:text-gray-400 ease-in-out"
         >
           Already a user?
