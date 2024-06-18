@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import express, { Request, Response } from "express";
-import verifyToken from "../middlewares/verifyToken";
 import { Server } from "socket.io";
 import http from "http";
 import app from "./app"; // Import the app instance
@@ -10,11 +8,15 @@ dotenv.config();
 
 const port: number = parseInt(process.env.PORT || "3000");
 
-const server = http.createServer(app); // Create server with the express app
+const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://sketch-sphere.vercel.app",
+    origin: [
+      "https://sketch-sphere.vercel.app",
+      "https://sketchsphere.vercel.app",
+    ],
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 

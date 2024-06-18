@@ -13,7 +13,17 @@ import cors from "cors";
 import verifyToken from "../middlewares/verifyToken";
 
 const app = express();
-app.use(cors({ origin: "*" }));
+
+const corsOptions = {
+  origin: [
+    "https://sketch-sphere.vercel.app",
+    "https://sketchsphere.vercel.app",
+  ], // Add all necessary origins here
+  methods: ["GET", "POST"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.post("/login", Login);
 app.post("/register", Register);
@@ -23,5 +33,5 @@ app.get("/user-details/:id", verifyToken, userDetails);
 app.post("/project-details", verifyToken, projectDetails);
 app.post("/save-canvas", saveDrawing);
 app.post("/load-canvas", loadCanvas);
-app.get("/user-details/:id", verifyToken, userDetails);
+
 export default app;
