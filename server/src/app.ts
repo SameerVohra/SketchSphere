@@ -15,10 +15,7 @@ import verifyToken from "../middlewares/verifyToken";
 const app = express();
 
 const corsOptions = {
-  origin: [
-    "https://sketch-sphere.vercel.app",
-    "https://sketchsphere.vercel.app",
-  ], // Add all necessary origins here
+  origin: "*",
   methods: ["GET", "POST"],
   credentials: true,
 };
