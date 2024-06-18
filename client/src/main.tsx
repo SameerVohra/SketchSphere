@@ -15,19 +15,23 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/login" || "/",
-        element: <Login />,
+        path: "/",
+        element: <Login />, // Default route to Login
       },
       {
-        path: "/register",
+        path: "login",
+        element: <Login />, // Separate login route
+      },
+      {
+        path: "register",
         element: <Register />,
       },
       {
-        path: "/:id/home",
+        path: ":id/home",
         element: <Home />,
       },
       {
-        path: "/:projid/:projname",
+        path: ":projid/:projname",
         element: <Projectpage />,
       },
     ],
@@ -35,9 +39,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </>,
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>,
 );

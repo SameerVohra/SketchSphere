@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import { useNavigate, useParams } from "react-router";
 import link from "../assets/link.json";
@@ -12,7 +12,8 @@ type ExtendedCanvasRenderingContext2D = CanvasRenderingContext2D & {
 };
 
 function Canvas() {
-  const socket = useMemo(() => io(`${link.url}`), []);
+  console.log(link.url);
+  const socket = io(link.url);
   const { projid, projname } = useParams<{
     projid: string;
     projname: string;

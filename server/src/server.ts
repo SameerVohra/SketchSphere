@@ -13,7 +13,7 @@ const port: number = parseInt(process.env.PORT || "3000");
 const server = http.createServer(app); // Create server with the express app
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow all origins, change in production
+    origin: "https://sketch-sphere.vercel.app",
     methods: ["GET", "POST"],
   },
 });
