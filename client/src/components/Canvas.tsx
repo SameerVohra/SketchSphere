@@ -13,7 +13,11 @@ type ExtendedCanvasRenderingContext2D = CanvasRenderingContext2D & {
 
 function Canvas() {
   console.log(link.url);
-  const socket = io(link.url);
+
+  const socket = io("https://sketch-sphere.vercel.app", {
+    transports: ["websocket"],
+  });
+
   const { projid, projname } = useParams<{
     projid: string;
     projname: string;

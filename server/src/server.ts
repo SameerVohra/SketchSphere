@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
 import { Server } from "socket.io";
 import http from "http";
-import app from "./app"; // Import the app instance
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
-const port: number = parseInt(process.env.PORT || "3000");
-
+const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -18,7 +18,11 @@ const io = new Server(server, {
 });
 
 mongoose
-  .connect(process.env.DB_URI!)
+  .connect(process.env.DB_URI!, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
   .then(() => {
     console.log("Connected to DB successfully");
   })
@@ -54,6 +58,7 @@ io.on("connection", (socket) => {
   });
 });
 
+const port = process.env.PORT || 3000;
 server.listen(port, () => {
-  console.log(`Listening on port: ${port}`);
+  console.log(`Listening on port ${port}`);
 });
