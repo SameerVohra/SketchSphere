@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import {
   JoinProject,
   Login,
@@ -9,13 +10,13 @@ import {
   saveDrawing,
   userDetails,
 } from "../controllers/controllers";
-import cors from "cors";
 import verifyToken from "../middlewares/verifyToken";
 
 const app = express();
 
+// CORS configuration
 const corsOptions = {
-  origin: "*",
+  origin: "https://sketchsphere.vercel.app",
   methods: ["GET", "POST"],
   credentials: true,
 };
