@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import io from "socket.io-client";
 import { useNavigate, useParams } from "react-router";
 import link from "../assets/link.json";
 import NavBar from "./NavBar";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
-const socket = io(`${link.url}`);
 
 type ExtendedCanvasRenderingContext2D = CanvasRenderingContext2D & {
   lastX?: number;
@@ -13,6 +12,7 @@ type ExtendedCanvasRenderingContext2D = CanvasRenderingContext2D & {
 };
 
 function Canvas() {
+  const socket = useMemo(() => io(`${link.url}`), []);
   const { projid, projname } = useParams<{
     projid: string;
     projname: string;
