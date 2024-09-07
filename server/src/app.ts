@@ -16,7 +16,7 @@ const app = express();
 
 // CORS configuration
 const corsOptions = {
-  origin: "https://sketchsphere.vercel.app",
+  origin: "*",
   methods: ["GET", "POST"],
   credentials: true,
 };

@@ -11,7 +11,7 @@ const port: number = parseInt(process.env.PORT || "3000");
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://sketchsphere.vercel.app",
+    origin: "*",
     methods: ["GET", "POST"],
     credentials: true,
   },
